@@ -27,16 +27,22 @@ passport.use(new FacebookStrategy({
     callbackURL: SITE_URL +'/auth/facebook/callback'
   },
   function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-      return cb(err, user);
-    });
+	return cb(null, profile);
   }
 ));
 
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
+});
 
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
+});
 
-
-
+// Initialize Passport and restore authentication state, if any, from the
+// session.
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 // Set routes and start server.	
