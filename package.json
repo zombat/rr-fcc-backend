@@ -1,0 +1,17 @@
+{
+  "name": "rr-fcc-backend",
+  "version": "0.0.1",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js --test",
+    "start": "node server.js"
+  },
+  "author": "Raymond Rizzo",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "passport": "^0.4.0"
+  }
+}

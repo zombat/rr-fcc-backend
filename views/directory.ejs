@@ -1,0 +1,50 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+<%- include navbar %>
+
+
+<div class="row top-10-down ">
+	<div class="container-fluid col-lg-10 col-xs-12 col-lg-offset-1 bg-white box-shadow">
+	<p>This is a test system.</p><p>All records will expire 5 minutes after last update.</p><p>Other people may be looking at this database, so be nice!</p>
+	</div>
+	<div class="container-fluid col-lg-10 col-xs-12 col-lg-offset-1 bg-white box-shadow">
+		<div class="row bg-primary"><h1>Directory</h1></div>
+		<div class="form-group container-fluid">
+			<input class="form-control pull-left" rows="1" id="searchBox"></input><button class="btn btn-primary pull-right" id="searchButton">Search</button>
+		</div>
+		
+			<div class="container-fluid col-lg-2 col-xs-12 list-area" id="searchResults">
+				<!-- Keep empty -->
+			</div>
+			
+			<div class="container-fluid col-lg-10 col-xs-12 detail-area">
+				<div id="detailArea">
+					<div class="form-group">
+						<label>First Name</label> <input class="form-control" rows="1" id="firstNameBox"></input>
+						<label>Last Name</label> <input class="form-control" rows="1" id="lastNameBox"></input>
+						<!-- label>Cell Phone</label> <input class="form-control" rows="1" id="cellPhoneBox"></input -->
+						<!-- label>Office Phone</label> <input class="form-control" rows="1" id="officePhoneBox"></input -->
+					</div>
+				</div>
+				<div class="container-fluid" id="contentMethodsContainer">
+					<div><p class="pull-left"><strong>Contact Methods</strong></p><button class="btn btn-success pull-right" id="addContactMethodButton">+</button></div>
+				</div>
+				<div id="contactMethods">
+					
+				</div>
+				
+				
+				<div id="modifierButtons">
+					<button class="btn btn-danger pull-right" id="deleteButton">Delete</button>
+					<button class="btn btn-success pull-right" id="updateButton">Update</button>
+					<button class="btn btn-success pull-right" id="insertButton">Insert</button>
+					<button class="btn btn-info pull-right" id="newButton">New</button>
+					<!-- button class="btn btn-warning pull-left" id="debugButton">DEBUG</button -->
+				</div>
+			</div>
+
+
+		
+		
+	</div>
+</div>
