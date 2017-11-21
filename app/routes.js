@@ -14,17 +14,6 @@ module.exports = function (app, passport) {
 			httpRes.render('home');
 		});
 		
-	app.route('/auth/facebook')
-		.get(function (httpReq, httpRes) {
-			passport.authenticate('facebook');
-		});
-		
-	app.route('/auth/facebook/callback')
-		.get(function (httpReq, httpRes) {
-			passport.authenticate('facebook', { failureRedirect: '/login' });
-			// Successful authentication, redirect home.
-			httpRes.redirect('/');
-		});	
 		
 	
 
