@@ -14,23 +14,22 @@ module.exports = function (app, passport) {
 			httpRes.render('home');
 		});
 		
-	app.route('/test')
-		.get(isLoggedIn, function (httpReq, httpRes) {
-			httpRes.render('debug-page');
-		});
-		
 		
 	
-app.get('/auth/facebook',
-  passport.authenticate('facebook'));
+	app.get('/auth/facebook',
+	  passport.authenticate('facebook'));
 
-app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  });
+	app.get('/auth/facebook/callback',
+	  passport.authenticate('facebook', { failureRedirect: '/login' }),
+	  function(req, res) {
+		// Successful authentication, redirect home.
+		res.redirect('/');
+	  });
 
-		
+	app.get('/test',
+	  require('connect-ensure-login').ensureLoggedIn(),
+	  function(req, res){
+		res.render('debug-page');
+	  });		
 		
 };
