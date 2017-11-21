@@ -5,13 +5,18 @@ module.exports = function (app, passport) {
 		if (req.isAuthenticated()) {
 			return next();
 		} else {
-			res.redirect('/login');
+			res.redirect('/');
 		}
 	}
 
 	app.route('/')
 		.get(function (httpReq, httpRes) {
 			httpRes.render('home');
+		});
+		
+	app.route('/test')
+		.get(isLoggedIn, function (httpReq, httpRes) {
+			httpRes.render('debug-page');
 		});
 		
 		
