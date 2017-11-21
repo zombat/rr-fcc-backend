@@ -12,10 +12,21 @@ module.exports = function (app, passport) {
 	app.route('/')
 		.get(function (httpReq, httpRes) {
 			httpRes.render('home');
-		//.get(isLoggedIn, function (req, res) {
-		//	res.sendFile(path + '/public/index.html');
 		});
-
+		
+	app.route('/auth/facebook')
+		.get(function (httpReq, httpRes) {
+			passport.authenticate('facebook');
+		});
+		
+	app.route('/auth/facebook/callback',
+		passport.authenticate('facebook', { failureRedirect: '/login' }))
+		.get(function (httpReq, httpRes) {
+			// Successful authentication, redirect home.
+			httpRes.redirect('/');
+		});	
+		
+	
 
 		
 		
