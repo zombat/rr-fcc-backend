@@ -16,7 +16,7 @@ module.exports = function (app, passport) {
 		
 	app.route('/login')
 		.get(function (httpReq, httpRes) {
-			httpRes.render('login');
+			httpRes.render('login', { user: httpReq.user });
 		});
 		
 	
@@ -38,7 +38,7 @@ module.exports = function (app, passport) {
 	app.get('/test',
 	  require('connect-ensure-login').ensureLoggedIn(),
 	  function(httpReq, httpRes){
-		httpRes.render('debug-page');
+		httpRes.render('debug-page', { user: httpReq.user });
 	  });		
 		
 };
