@@ -21,7 +21,7 @@ module.exports = function (app, passport) {
 		
 	app.route('/auth/facebook')
 		.get(function (httpReq, httpRes) {
-			passport.authenticate('facebook'));
+			passport.authenticate('facebook');
 		});	
 	/*
 	app.get('/auth/facebook',
