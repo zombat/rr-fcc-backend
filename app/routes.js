@@ -19,19 +19,15 @@ module.exports = function (app, passport) {
 			httpRes.render('login');
 		});
 		
-	app.route('/auth/facebook')
-		.get(function (httpReq, httpRes) {
-			passport.authenticate('facebook');
-		});	
-	/*
+	
 	app.get('/auth/facebook',
 	  passport.authenticate('facebook'));
-	*/
+	
 	
 	app.get('/auth/facebook/callback',
-	  passport.authenticate('facebook', { failureRedirect: '/' }),
+	  passport.authenticate('facebook', { failureRedirect: '/login' }),
 	  function(req, res) {
-		// Successful authentication, redirect home.
+		// Successful authentication redirect.
 		res.redirect('/test');
 	  });
 
