@@ -16,7 +16,11 @@ module.exports = function (app, passport) {
 		
 	app.route('/login')
 		.get(function (httpReq, httpRes) {
-			httpRes.render('login', { user: httpReq.user });
+			if(httpReq.user){	
+				httpRes.render('home', { user: httpReq.user } );
+			} else {
+				httpRes.render('login', { user: httpReq.user });
+			}
 		});
 		
 	
