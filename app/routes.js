@@ -14,11 +14,20 @@ module.exports = function (app, passport) {
 			httpRes.render('home');
 		});
 		
+	app.route('/login')
+		.get(function (httpReq, httpRes) {
+			httpRes.render('login');
+		});
 		
-	
+	app.route('/auth/facebook')
+		.get(function (httpReq, httpRes) {
+			passport.authenticate('facebook'));
+		});	
+	/*
 	app.get('/auth/facebook',
 	  passport.authenticate('facebook'));
-
+	*/
+	
 	app.get('/auth/facebook/callback',
 	  passport.authenticate('facebook', { failureRedirect: '/' }),
 	  function(req, res) {
