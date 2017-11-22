@@ -23,18 +23,22 @@ module.exports = function (app, passport) {
 	app.get('/auth/facebook',
 	  passport.authenticate('facebook'));
 	
+	app.get('/logout', function(httpReq, httpRes){
+	  httpReq.logout();
+	  httpRes.redirect('/');
+	});
 	
 	app.get('/auth/facebook/callback',
 	  passport.authenticate('facebook', { failureRedirect: '/login' }),
-	  function(req, res) {
+	  function(httpReq, httpRes) {
 		// Successful authentication redirect.
-		res.redirect('/test');
+		httpRes.redirect('/test');
 	  });
 
 	app.get('/test',
 	  require('connect-ensure-login').ensureLoggedIn(),
-	  function(req, res){
-		res.render('debug-page');
+	  function(httpReq, httpRes){
+		httpRes.render('debug-page');
 	  });		
 		
 };
