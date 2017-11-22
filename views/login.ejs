@@ -7,11 +7,20 @@
 
 <%- include navbar %>
 
-<h1>Login</h1>
 
-<form action="/auth/facebook">
-    <button class="btn btn-primary" type="submit"><i class="fa fa-facebook" aria-hidden="true"></i> Login with Facebook</button>
-</form>
+<div class="row top-10-down ">
+	<div class="container-fluid col-lg-4 col-xs-10 col-lg-offset-4 col-xs-offset-1 bg-white box-shadow">
+		<div class="row bg-primary"><h1>Sign In</h1></div>
+			
+			<div class="row">
+				<form action="/auth/facebook">
+					<button class="btn btn-primary" type="submit"><i class="fa fa-facebook" aria-hidden="true"></i> Login with Facebook</button>
+				</form>
+			</div>
+			
+	</div>
+</div>
+
 
 <%- include script-includes %>
 
