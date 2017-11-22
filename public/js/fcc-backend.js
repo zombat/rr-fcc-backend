@@ -1,9 +1,11 @@
-// const siteURL = 'https://rr-fcc-backend.herokuapp.com';
-const siteURL = 'http://127.0.0.1';
+var siteURL = 'https://rr-fcc-backend.herokuapp.com';
 
 $( document ).ready(function() {
 	console.log('Document Ready');
-
+	if( window.location.hostname == '127.0.0.1'){
+		siteURL = 'http://127.0.0.1';
+		console.log('Running on localhost');
+	}
 	
 	$('#nav-logout').hover(function() {
 		$('#nav-text').html('Sign Out');
