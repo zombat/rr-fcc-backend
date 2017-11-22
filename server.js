@@ -2,10 +2,16 @@ require('dotenv').load();
 
 const express = require('express'),
 	passport = require('passport'),
+	request = require('request'),
 	FacebookStrategy = require('passport-facebook').Strategy;
 	httpPort = process.env.PORT || 80,
 	routes = require('./app/routes.js'),
 	app = express(),
+	mongo = require('mongodb').MongoClient,
+	MONGO_USER = process.env.MONGO_USER,
+	MONGO_PASSWORD = process.env.MONGO_PASSWORD,
+	MONGO_STRING = process.env.MONGO_STRING,
+	MONGO_URI = 'mongodb://' + MONGO_USER + ':' + MONGO_PASSWORD + '@' + process.env.MONGO_STRING;
 	FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID,
 	FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET,
 	SITE_URL = process.env.SITE_URL;
@@ -53,6 +59,6 @@ app.use(passport.session());
 
 
 // Set routes and start server.	
-routes(app, passport);	
+routes(app, passport, mongo, MONGO_URI);	
 app.listen(httpPort);
 console.log('HTTP listening on port ' + httpPort);

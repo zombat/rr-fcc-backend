@@ -1,0 +1,30 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+<title>Free Code Camp Voting App</title>
+
+<%- include css-includes %>
+
+
+<%- include navbar %>
+
+<div class="row top-10-down container-fluid">
+	<div class="container-fluid col-lg-10 col-xs-10 col-lg-offset-1 col-xs-offset-1 bg-white box-shadow">
+		<div class="row bg-primarycontainer-fluid"><h1>Free Code Camp Voting App</h1></div>
+			<h2>Below are polls hosted by fcc-voting.</h2>
+			<% if (user) { %>
+			
+			<% } else { %>
+				<h3>Select a poll to see the results and vote, or sign-in to make a new poll.</h3>
+			<% } %>	
+			
+			
+			<div id="poll-list" class="well container-fluid">
+			</div>
+			
+	</div>
+</div>
+
+<%- include script-includes %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+
+

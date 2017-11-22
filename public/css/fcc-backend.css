@@ -145,3 +145,17 @@ textarea {
 	margin: 10%;;
 	width: 80%;
 }
+
+#poll-list{
+	width: 80%;
+	margin: 10%;
+	padding: 20px;
+}
+.btn-poll{
+	width: 50%;
+}
+#canvasDiv {
+	height: 40%;
+	width: 40%;
+	float: right;
+}
