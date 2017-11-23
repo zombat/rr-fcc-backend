@@ -95,6 +95,41 @@ module.exports = function (app, passport) {
 		}
 	  });
 		
+	app.get('/delete-poll',
+	 require('connect-ensure-login').ensureLoggedIn(),
+	  function(httpReq, httpRes){
+		  if(httpReq.query.pollID){
+			  mongo.connect(MONGO_URI, function(err, db) {
+				db.collection('fcc-polls', function (err, collection) {   
+					collection.findOne({ '_id' : require('mongodb').ObjectID(httpReq.query.pollID)} ).then(function(document) {
+						if(document){
+							if(document.pollOwner == httpReq.user.id){
+								mongo.connect(MONGO_URI, function(err, db) {
+									db.collection('fcc-polls', function (err, collection) {      
+										collection.deleteOne({ '_id' : require('mongodb').ObjectID(httpReq.query.pollID)}).then(function(document) {
+											if(document){
+												httpRes.setHeader('Content-Type', 'application/json');
+												httpRes.end(JSON.stringify(document));
+											}
+											db.close();
+									  });
+									});
+								});
+							} else {
+								httpRes.setHeader('Content-Type', 'application/json');
+								httpRes.end(JSON.stringify({ 'error' : 'This is not your poll' }));
+							}
+						}
+						db.close();
+				  });
+				});
+			});
+		  }
+		  
+		  
+		  
+	 });	
+		
 	app.get('/get-user',
 	  require('connect-ensure-login').ensureLoggedIn(),
 	  function(httpReq, httpRes){

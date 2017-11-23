@@ -44,6 +44,13 @@ $( document ).ready(function() {
 		getPolls('default');
 	});
 	
+	$(document).on('click','#delete-poll', function() {
+		var workingID = $(this).closest('.poll').attr('id');
+		$.getJSON(siteURL + '/delete-poll?pollID=' + workingID + '&voteCast=' + $('#select-' + workingID).val().toString()).done(function(data) {	
+			getPolls('default');
+		});
+	});
+	
 	$(document).on('click','.remove-poll-choice-button', function() {
 		$(this).parent().remove();
 	});	
@@ -124,7 +131,7 @@ function buildChart(thisID){
 				counter++;
 			}
 			if(userObject.id == thePoll.pollOwner){
-				$('#button-area').append('<button class="btn btn-danger btn-block" id="go-back">Delete Poll</button>');
+				$('#button-area').append('<button class="btn btn-danger btn-block" id="delete-poll">Delete Poll</button>');
 			}
 			var ctx = document.getElementById("resultChart").getContext('2d');
 			var myChart = new Chart(ctx, {

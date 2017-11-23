@@ -5,9 +5,6 @@
 <div>
 	<div class="nav-bar bg-primary box-shadow container-fluid">
 		<% if (user) { %>
-			<script>
-				var userObject = <%= user %>            
-			</script>
 			<a href="/logout" class="pull-right" title="Sign out" id="nav-logout"><i class="fa fa-2x fa-sign-out" aria-hidden="true"></i></a>
 		<% } else { %>
 			<a href="/login" class="pull-right" title="Sign in" id="nav-login"><i class="fa fa-2x fa-sign-in" aria-hidden="true"></i></a>
