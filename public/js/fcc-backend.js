@@ -28,10 +28,14 @@ $( document ).ready(function() {
 	$(document).on('click','.result-entry', function() {
 		var thisID = $(this).attr('id');
 		buildChart(thisID);
+	});	
+	
+	$(document).on('click','#my-polls', function() {
+		getPolls('mine');
 	});
 	
 	$(document).on('click','#go-back', function() {
-		getPolls();
+		getPolls('default');
 	});
 	
 	$(document).on('click','.remove-poll-choice-button', function() {
@@ -76,14 +80,23 @@ $( document ).ready(function() {
 
 
 
-function getPolls(){
+function getPolls(type){
 	$('#poll-list').empty();
-	$.getJSON(siteURL + '/vote-api?pollList=true').done(function(data) {
-		searchResultsArray = data;
-		searchResultsArray.forEach(function(resultEntry){
-			$('#poll-list').append('<div class="result-entry text-center" id="' + resultEntry._id + '">' + resultEntry.pollTitle + '</div>');
+	if (type == 'mine'){
+		$.getJSON(siteURL + '/vote-api?myPolls=true').done(function(data) {
+			searchResultsArray = data;
+			searchResultsArray.forEach(function(resultEntry){
+				$('#poll-list').append('<div class="result-entry text-center" id="' + resultEntry._id + '">' + resultEntry.pollTitle + '</div>');
+			});
 		});
-	});
+	} else {	
+		$.getJSON(siteURL + '/vote-api?pollList=true').done(function(data) {
+			searchResultsArray = data;
+			searchResultsArray.forEach(function(resultEntry){
+				$('#poll-list').append('<div class="result-entry text-center" id="' + resultEntry._id + '">' + resultEntry.pollTitle + '</div>');
+			});
+		});
+	}
 }
 
 function buildChart(thisID){
