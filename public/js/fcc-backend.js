@@ -1,5 +1,6 @@
-//var siteURL = 'https://rr-fcc-backend.herokuapp.com';
-var siteURL = 'http://127.0.0.1';
+var siteURL = 'https://rr-fcc-backend.herokuapp.com';
+//var siteURL = 'http://127.0.0.1';
+
 $( document ).ready(function() {
 	console.log('Document Ready');
 	
@@ -8,8 +9,15 @@ $( document ).ready(function() {
 	}, function() {
 		$('#nav-text').text('');
 	});
+	
 	$('#nav-login').hover(function() {
 		$('#nav-text').html('Sign In');
+	}, function() {
+		$('#nav-text').text('');
+	});
+	
+	$('#nav-fcc-vote').hover(function() {
+		$('#nav-text').html('Free Code Camp Voting App');
 	}, function() {
 		$('#nav-text').text('');
 	});
