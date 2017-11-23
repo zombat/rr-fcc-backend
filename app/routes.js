@@ -50,7 +50,7 @@ module.exports = function (app, passport) {
 	});
 	
 	app.get('/submit-poll',
-	  //require('connect-ensure-login').ensureLoggedIn(),
+	  require('connect-ensure-login').ensureLoggedIn(),
 	  function(httpReq, httpRes){
 		  if(httpReq.query.newPoll && httpReq.query.pollName && httpReq.query.pollChoices){
 			
