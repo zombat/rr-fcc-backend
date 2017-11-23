@@ -108,17 +108,8 @@ module.exports = function (app, passport) {
 	  passport.authenticate('facebook', { failureRedirect: '/login' }),
 	  function(httpReq, httpRes) {
 		// Successful authentication redirect.
-		httpRes.redirect('/test');
+		httpRes.redirect('/fcc-voting');
 	  });
-
-	app.get('/test',
-	  require('connect-ensure-login').ensureLoggedIn(),
-	  function(httpReq, httpRes){
-		httpRes.render('debug-page', { user: httpReq.user });
-	  });		
-
-
-	  
 	  
 	app.get('/*', function (httpReq, httpRes) {
 		httpRes.render('home', { user: httpReq.user } );
