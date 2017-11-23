@@ -47,7 +47,17 @@ module.exports = function (app, passport) {
 				});
 			});
 		} else if(httpReq.query.myPolls) {
-			console.log(httpReq.user);
+			mongo.connect(MONGO_URI, function(err, db) {
+				var tempVar;
+				db.collection('fcc-polls', function (err, collection) {      
+					collection.find({ 'pollOwner' : httpReq.user.id.toString() },{'_id': 1, 'pollTitle': 1}).toArray(function(err, documents) {
+						if(err) throw err;
+							httpRes.setHeader('Content-Type', 'application/json');
+							httpRes.end(JSON.stringify(documents));
+							db.close();
+					});	
+				});
+			});
 		}
 	});
 	
@@ -59,6 +69,7 @@ module.exports = function (app, passport) {
 			console.log(httpReq.query);
 			var newPollDocument = {
 					pollTitle : httpReq.query.pollName,
+					pollOwner : httpReq.user.id.toString(),
 					pollChoices : []
 				};
 			var choiceArray = JSON.parse(httpReq.query.pollChoices);
