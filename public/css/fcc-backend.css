@@ -128,17 +128,22 @@ textarea {
 	padding: 10px;
 }
 
-.contact-method{
-	width: 40%;
+.poll-choice{
+	width: 35%;
+	padding-right: 5px;
 }
 
-.contact-method-entry {
-	padding-top: 3px;
+.poll-choice-entry {
+	padding-top: 10px;
 	margin-top: 5px;
 	height: 40px;
 }
+
 .contact-method-entry input {
 	margin-right: 10px;
+}
+.contact-method-entry select {
+	padding-right: 10px;
 }
 
 .btn-fb {
@@ -148,7 +153,6 @@ textarea {
 
 #poll-list{
 	width: 80%;
-	margin: 10%;
 	padding: 20px;
 }
 .btn-poll{

@@ -36,7 +36,6 @@ module.exports = function (app, passport) {
 			});
 		} else if(httpReq.query.pollID){
 			mongo.connect(MONGO_URI, function(err, db) {
-				var tempVar;
 				db.collection('fcc-polls', function (err, collection) {      
 					collection.findOne({ '_id' : require('mongodb').ObjectID(httpReq.query.pollID) }).then(function(document) {
 						if(document){
@@ -47,9 +46,42 @@ module.exports = function (app, passport) {
 				  });
 				});
 			});
-		} 
+		}
 	});
-
+	
+	app.get('/submit-poll',
+	  require('connect-ensure-login').ensureLoggedIn(),
+	  function(httpReq, httpRes){
+		  if(httpReq.query.newPoll && httpReq.query.pollName && httpReq.query.pollChoices){
+			
+			console.log(httpReq.query);
+			var newPollDocument = {
+					pollTitle : httpReq.query.pollName,
+					pollChoices : []
+				};
+			var choiceArray = JSON.parse(httpReq.query.pollChoices);
+			choiceArray.forEach(function(pollChoice){
+				newPollDocument.pollChoices.push( {
+					choiceName : pollChoice[0],
+					voteCount : 0,
+					voteColor : pollChoice[1]
+				});
+			});
+				console.log(newPollDocument);	
+			mongo.connect(MONGO_URI, function(err, db) {
+				db.collection('fcc-polls', function (err, collection) {      
+					collection.insertOne( newPollDocument ).then(function(document) {
+						if(document){
+							httpRes.setHeader('Content-Type', 'application/json');
+							httpRes.end(JSON.stringify(document));
+						}
+						db.close();
+				  });
+				});
+			});
+		}
+		httpRes.render('debug-page', { user: httpReq.user });
+	  });
 		
 	app.get('/fcc-voting', function (httpReq, httpRes) {
 		httpRes.render('fcc-voting', { user: httpReq.user } );

@@ -26,10 +26,43 @@ $( document ).ready(function() {
 		buildChart(thisID);
 	});
 	
+	$(document).on('click','#go-back', function() {
+		getPolls();
+	});
+	
+	$(document).on('click','.remove-poll-choice-button', function() {
+		$(this).parent().remove();
+	});	
+	
+	$(document).on('click','#submit-poll', function() {
+		var choicesArray = [];
+		$('.poll-choice-entry').each(function(){
+				var tempChoiceName = $(this).find('.poll-choice-name').val().toString();
+				tempChoiceName = encodeURI(tempChoiceName);
+				choicesArray.push( [ tempChoiceName, $(this).find('.poll-choice-color').val().toString() ] );
+		});	
+		$.getJSON(siteURL + '/submit-poll?newPoll=true&pollName=' + encodeURI($('#poll-name-box').val().toString()) + '&pollChoices=' + JSON.stringify(choicesArray)).done(function(data) {	
+			getPolls();
+		});
+	});
+	
+	$(document).on('click','#create-poll', function() {
+	$('#poll-list').empty();
+		$('#poll-list').append('<div class="form-group"><label>Poll Name</label><input class="form-control" rows="1" id="poll-name-box" placeholder="Poll Name"></input></div><div class="form-group" id="poll-choices"><label>Poll Choices</label><button class="btn btn-success pull-right" id="add-poll-choice">+</button></div><button class="btn btn-primary btn-block" id="submit-poll">Submit This Poll</button><button class="btn btn-warning btn-block" id="go-back">Back to Polls</button>');
+	});
+	
+	$(document).on('click','#add-poll-choice', function() {
+		if($('#poll-choices').children().length < 52){
+			$('#poll-choices').append('<div class="poll-choice-entry"><input class="form-control pull-left poll-choice poll-choice-name" rows="1" maxlength="17" placeholder="Poll Choice Name"></input><button class="btn btn-danger pull-right remove-poll-choice-button">-</button><select name="Poll Choices" class="btn btn-poll pull-right poll-choice poll-choice-color"><option value="aliceblue">aliceblue</option><option value="antiquewhite">antiquewhite</option><option value="aqua">aqua</option><option value="aquamarine">aquamarine</option><option value="azure">azure</option><option value="beige">beige</option><option value="bisque">bisque</option><option value="black">black</option><option value="blanchedalmond">blanchedalmond</option><option value="blue">blue</option><option value="blueviolet">blueviolet</option><option value="brown">brown</option><option value="burlywood">burlywood</option><option value="cadetblue">cadetblue</option><option value="chartreuse">chartreuse</option><option value="chocolate">chocolate</option><option value="coral">coral</option><option value="cornflowerblue">cornflowerblue</option><option value="crimson">crimson</option><option value="cyan">cyan</option><option value="darkblue">darkblue</option><option value="darkcyan">darkcyan</option><option value="darkgoldenrod">darkgoldenrod</option><option value="darkgray">darkgray</option><option value="darkgreen">darkgreen</option><option value="darkmagenta">darkmagenta</option><option value="darkorange">darkorange</option><option value="darkred">darkred</option><option value="darksalmon">darksalmon</option><option value="dodgerblue">dodgerblue</option></select></div>');
+		} else {
+			alert('Choice limit reached.');
+		}
+	});
 	
 	$(document).on('click','#submit-vote', function() {
 		var workingID = $(this).closest('.poll').attr('id');
-		$.getJSON(siteURL + '/vote-api?pollID=' + workingID + '&voteCast=' + $('#select-' + workingID).val()).done(function(data) {	
+		$.getJSON(siteURL + '/vote-api?pollID=' + workingID + '&voteCast=' + $('#select-' + workingID).val().toString()).done(function(data) {	
+			alert('Vote sucessfully cast for ' + $('#select-' + workingID).val().toString());
 			buildChart(workingID);
 		});
 	});
@@ -39,6 +72,7 @@ $( document ).ready(function() {
 
 
 function getPolls(){
+	$('#poll-list').empty();
 	$.getJSON(siteURL + '/vote-api?pollList=true').done(function(data) {
 		searchResultsArray = data;
 		searchResultsArray.forEach(function(resultEntry){
@@ -50,17 +84,19 @@ function getPolls(){
 function buildChart(thisID){
 		var voteLabels = [];
 		var voteCount = [];
+		var voteColor = [];
 		$('#poll-list').empty();
 			$.getJSON(siteURL + '/vote-api?pollID=' + thisID).done(function(data) {
 			thePoll = data;
 			console.log(thePoll);
 			$('#poll-list').append('<div id="' + thePoll._id + '" class="poll"><h2>' + thePoll.pollTitle + '</h2><div id="canvasDiv"><canvas class="pull-right" id="resultChart"></canvas></div></div>');
-			$('#' + thePoll._id).append('<select id="select-' + thePoll._id + '" name="Poll Choices" class="btn btn-poll"></select><button class="btn btn-primary btn-block" id="submit-vote">Sumbit Vote</button>');
+			$('#' + thePoll._id).append('<select id="select-' + thePoll._id + '" name="Poll Choices" class="btn btn-poll"></select><button class="btn btn-primary btn-block" id="submit-vote">Sumbit Vote</button><button class="btn btn-warning btn-block" id="go-back">Back to Polls</button>');
 			var counter = 0;
 			while(counter < thePoll.pollChoices.length){
 				$('#select-' + thePoll._id).append('<option value="' + thePoll.pollChoices[counter].choiceName + '">' + thePoll.pollChoices[counter].choiceName + '</option>');
 				voteLabels.push(thePoll.pollChoices[counter].choiceName);
 				voteCount.push(thePoll.pollChoices[counter].voteCount);
+				voteColor.push(thePoll.pollChoices[counter].voteColor);
 				counter++;
 			}
 			var ctx = document.getElementById("resultChart").getContext('2d');
@@ -71,22 +107,8 @@ function buildChart(thisID){
 					datasets: [{
 						label: '# of Votes',
 						data: voteCount,
-						backgroundColor: [
-							'rgba(255, 99, 132, 0.2)',
-							'rgba(54, 162, 235, 0.2)',
-							'rgba(255, 206, 86, 0.2)',
-							'rgba(75, 192, 192, 0.2)',
-							'rgba(153, 102, 255, 0.2)',
-							'rgba(255, 159, 64, 0.2)'
-						],
-						borderColor: [
-							'rgba(255,99,132,1)',
-							'rgba(54, 162, 235, 1)',
-							'rgba(255, 206, 86, 1)',
-							'rgba(75, 192, 192, 1)',
-							'rgba(153, 102, 255, 1)',
-							'rgba(255, 159, 64, 1)'
-						],
+						backgroundColor: voteColor,
+						borderColor: voteColor,
 						borderWidth: 1
 					}]
 				},

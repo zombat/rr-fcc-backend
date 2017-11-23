@@ -10,17 +10,19 @@
 <div class="row top-10-down container-fluid">
 	<div class="container-fluid col-lg-10 col-xs-12 col-lg-offset-1 bg-white box-shadow">
 		<div class="row bg-primarycontainer-fluid"><h1>Free Code Camp Voting App</h1></div>
-			<h2>Below are polls hosted by fcc-voting.</h2>
 			<% if (user) { %>
-			
+				<h2>Select a poll to see the results and vote, or create a new poll.</h2>
 			<% } else { %>
-				<h3>Select a poll to see the results and vote, or sign-in to make a new poll.</h3>
+				<h2>Select a poll to see the results and vote, or sign-in to create a new poll.</h2>
 			<% } %>	
 			
-			
-			<div id="poll-list" class="well container-fluid">
+			<div class="well">
+				<div id="poll-list" class="container-fluid">
+				</div>
+				<% if (user) { %>
+					<button class="btn btn-success btn-block" id="create-poll">Create New Poll</button>
+				<% } %>	
 			</div>
-			
 	</div>
 </div>
 
