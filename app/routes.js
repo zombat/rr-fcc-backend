@@ -46,6 +46,8 @@ module.exports = function (app, passport) {
 				  });
 				});
 			});
+		} else if(httpReq.query.myPolls) {
+			console.log(httpReq.user);
 		}
 	});
 	
