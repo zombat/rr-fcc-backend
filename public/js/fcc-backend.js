@@ -1,5 +1,5 @@
-var siteURL = 'https://rr-fcc-backend.herokuapp.com';
-
+//var siteURL = 'https://rr-fcc-backend.herokuapp.com';
+var siteURL = 'http://127.0.0.1';
 $( document ).ready(function() {
 	console.log('Document Ready');
 	
@@ -38,6 +38,7 @@ $( document ).ready(function() {
 				choicesArray.push( [ tempChoiceName, $(this).find('.poll-choice-color').val().toString() ] );
 		});	
 		$.getJSON(siteURL + '/submit-poll?newPoll=true&pollName=' + encodeURI($('#poll-name-box').val().toString()) + '&pollChoices=' + JSON.stringify(choicesArray)).done(function(data) {	
+			alert('Submitted New Poll');
 			getPolls();
 		});
 	});
@@ -49,9 +50,9 @@ $( document ).ready(function() {
 	
 	$(document).on('click','#add-poll-choice', function() {
 		if($('#poll-choices').children().length < 52){
-			$('#poll-choices').append('<div class="poll-choice-entry"><input class="form-control pull-left poll-choice poll-choice-name" rows="1" maxlength="17" placeholder="Poll Choice Name"></input><button class="btn btn-danger pull-right remove-poll-choice-button">-</button><select name="Poll Choices" class="btn btn-poll pull-right poll-choice poll-choice-color"><option value="aliceblue">aliceblue</option><option value="antiquewhite">antiquewhite</option><option value="aqua">aqua</option><option value="aquamarine">aquamarine</option><option value="azure">azure</option><option value="beige">beige</option><option value="bisque">bisque</option><option value="black">black</option><option value="blanchedalmond">blanchedalmond</option><option value="blue">blue</option><option value="blueviolet">blueviolet</option><option value="brown">brown</option><option value="burlywood">burlywood</option><option value="cadetblue">cadetblue</option><option value="chartreuse">chartreuse</option><option value="chocolate">chocolate</option><option value="coral">coral</option><option value="cornflowerblue">cornflowerblue</option><option value="crimson">crimson</option><option value="cyan">cyan</option><option value="darkblue">darkblue</option><option value="darkcyan">darkcyan</option><option value="darkgoldenrod">darkgoldenrod</option><option value="darkgray">darkgray</option><option value="darkgreen">darkgreen</option><option value="darkmagenta">darkmagenta</option><option value="darkorange">darkorange</option><option value="darkred">darkred</option><option value="darksalmon">darksalmon</option><option value="dodgerblue">dodgerblue</option></select></div>');
+			$('#poll-choices').append('<div class="poll-choice-entry"><input class="form-control pull-left poll-choice poll-choice-name" rows="1" maxlength="100" placeholder="Poll Choice Name"></input><button class="btn btn-danger pull-right remove-poll-choice-button">-</button><select name="Poll Choices" class="btn btn-poll pull-right poll-choice poll-choice-color"><option value="aliceblue">aliceblue</option><option value="antiquewhite">antiquewhite</option><option value="aqua">aqua</option><option value="aquamarine">aquamarine</option><option value="azure">azure</option><option value="beige">beige</option><option value="bisque">bisque</option><option value="black">black</option><option value="blanchedalmond">blanchedalmond</option><option value="blue">blue</option><option value="blueviolet">blueviolet</option><option value="brown">brown</option><option value="burlywood">burlywood</option><option value="cadetblue">cadetblue</option><option value="chartreuse">chartreuse</option><option value="chocolate">chocolate</option><option value="coral">coral</option><option value="cornflowerblue">cornflowerblue</option><option value="crimson">crimson</option><option value="cyan">cyan</option><option value="darkblue">darkblue</option><option value="darkcyan">darkcyan</option><option value="darkgoldenrod">darkgoldenrod</option><option value="darkgray">darkgray</option><option value="darkgreen">darkgreen</option><option value="darkmagenta">darkmagenta</option><option value="darkorange">darkorange</option><option value="darkred">darkred</option><option value="darksalmon">darksalmon</option><option value="dodgerblue">dodgerblue</option></select></div>');
 		} else {
-			alert('Choice limit reached.');
+			alert('Arbitrary choice limit reached.');
 		}
 	});
 	
