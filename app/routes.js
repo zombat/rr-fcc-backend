@@ -22,6 +22,18 @@ module.exports = function (app, passport) {
 					});	
 				});
 			});
+		} else if(httpReq.query.pollID && httpReq.query.voteCast){
+			mongo.connect(MONGO_URI, function(err, db) {
+				db.collection('fcc-polls', function (err, collection) {   
+					collection.updateOne({ '_id' : require('mongodb').ObjectID(httpReq.query.pollID), 'pollChoices.choiceName': httpReq.query.voteCast }, { $inc : { 'pollChoices.$.voteCount': 1  } } ).then(function(document) {
+						if(document){
+							httpRes.setHeader('Content-Type', 'application/json');
+							httpRes.end(JSON.stringify(document));
+						}
+						db.close();
+				  });
+				});
+			});
 		} else if(httpReq.query.pollID){
 			mongo.connect(MONGO_URI, function(err, db) {
 				var tempVar;
@@ -33,18 +45,9 @@ module.exports = function (app, passport) {
 						}
 						db.close();
 				  });
-					
-					/*
-					.toArray(function(err, documents) {
-						if(err) throw err;
-							httpRes.setHeader('Content-Type', 'application/json');
-							httpRes.end(JSON.stringify(documents));
-							db.close();
-					});	
-					*/
 				});
 			});
-		}
+		} 
 	});
 
 		

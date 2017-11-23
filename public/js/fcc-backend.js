@@ -23,19 +23,44 @@ $( document ).ready(function() {
 	
 	$(document).on('click','.result-entry', function() {
 		var thisID = $(this).attr('id');
+		buildChart(thisID);
+	});
+	
+	
+	$(document).on('click','#submit-vote', function() {
+		var workingID = $(this).closest('.poll').attr('id');
+		$.getJSON(siteURL + '/vote-api?pollID=' + workingID + '&voteCast=' + $('#select-' + workingID).val()).done(function(data) {	
+			buildChart(workingID);
+		});
+	});
+	
+});
+
+
+
+function getPolls(){
+	$.getJSON(siteURL + '/vote-api?pollList=true').done(function(data) {
+		searchResultsArray = data;
+		searchResultsArray.forEach(function(resultEntry){
+			$('#poll-list').append('<div class="result-entry text-center" id="' + resultEntry._id + '">' + resultEntry.pollTitle + '</div>');
+		});
+	});
+}
+
+function buildChart(thisID){
 		var voteLabels = [];
 		var voteCount = [];
 		$('#poll-list').empty();
-		$.getJSON(siteURL + '/vote-api?pollID=' + thisID).done(function(data) {
+			$.getJSON(siteURL + '/vote-api?pollID=' + thisID).done(function(data) {
 			thePoll = data;
 			console.log(thePoll);
-			$('#poll-list').append('<div id="' + thePoll._id + '"><h2>' + thePoll.pollTitle + '</h2><div id="canvasDiv"><canvas class="pull-right" id="resultChart"></canvas></div></div>');
-			$('#' + thePoll._id).append('<select id="select-' + thePoll._id + '" name="Poll Choices" class="btn btn-poll"></select><button class="btn btn-primary btn-block">Sumbit Vote</button>');
+			$('#poll-list').append('<div id="' + thePoll._id + '" class="poll"><h2>' + thePoll.pollTitle + '</h2><div id="canvasDiv"><canvas class="pull-right" id="resultChart"></canvas></div></div>');
+			$('#' + thePoll._id).append('<select id="select-' + thePoll._id + '" name="Poll Choices" class="btn btn-poll"></select><button class="btn btn-primary btn-block" id="submit-vote">Sumbit Vote</button>');
 			var counter = 0;
 			while(counter < thePoll.pollChoices.length){
-				$('#select-' + thePoll._id).append('<option value="' + counter + '">' + thePoll.pollChoices[counter][0] + '</option>');
-				voteLabels.push(thePoll.pollChoices[counter][0]);
-				voteCount.push(thePoll.pollChoices[counter][1]);
+				$('#select-' + thePoll._id).append('<option value="' + thePoll.pollChoices[counter].choiceName + '">' + thePoll.pollChoices[counter].choiceName + '</option>');
+				voteLabels.push(thePoll.pollChoices[counter].choiceName);
+				voteCount.push(thePoll.pollChoices[counter].voteCount);
 				counter++;
 			}
 			var ctx = document.getElementById("resultChart").getContext('2d');
@@ -72,26 +97,4 @@ $( document ).ready(function() {
 			
 			
 		});
-	});
-	
-});
-
-	
-
-
-
-
-
-function getPolls(){
-	$.getJSON(siteURL + '/vote-api?pollList=true').done(function(data) {
-		searchResultsArray = data;
-		searchResultsArray.forEach(function(resultEntry){
-			$('#poll-list').append('<div class="result-entry text-center" id="' + resultEntry._id + '">' + resultEntry.pollTitle + '</div>');
-		});
-	});
 }
-
-function entrySelect(){
-	
-}
-
