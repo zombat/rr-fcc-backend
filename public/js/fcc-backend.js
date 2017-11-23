@@ -108,7 +108,7 @@ function buildChart(thisID){
 			thePoll = data;
 			console.log(thePoll);
 			$('#poll-list').append('<div id="' + thePoll._id + '" class="poll"><h2>' + thePoll.pollTitle + '</h2><div id="canvasDiv"><canvas class="pull-right" id="resultChart"></canvas></div></div>');
-			$('#' + thePoll._id).append('<select id="select-' + thePoll._id + '" name="Poll Choices" class="btn btn-poll"></select><button class="btn btn-primary btn-block" id="submit-vote">Sumbit Vote</button><button class="btn btn-warning btn-block" id="go-back">Back to Polls</button>');
+			$('#' + thePoll._id).append('<select id="select-' + thePoll._id + '" name="Poll Choices" class="btn btn-poll"></select><div id="button-area"><button class="btn btn-primary btn-block" id="submit-vote">Sumbit Vote</button><button class="btn btn-warning btn-block" id="go-back">Back to Polls</button></div>');
 			var counter = 0;
 			while(counter < thePoll.pollChoices.length){
 				$('#select-' + thePoll._id).append('<option value="' + thePoll.pollChoices[counter].choiceName + '">' + thePoll.pollChoices[counter].choiceName + '</option>');
@@ -116,6 +116,9 @@ function buildChart(thisID){
 				voteCount.push(thePoll.pollChoices[counter].voteCount);
 				voteColor.push(thePoll.pollChoices[counter].voteColor);
 				counter++;
+			}
+			if(userObject.id == thePoll.pollOwner){
+				$('#button-area').append('<button class="btn btn-danger btn-block" id="go-back">Delete Poll</button>');
 			}
 			var ctx = document.getElementById("resultChart").getContext('2d');
 			var myChart = new Chart(ctx, {
