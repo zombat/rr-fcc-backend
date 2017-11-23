@@ -130,9 +130,6 @@ function buildChart(thisID){
 				voteColor.push(thePoll.pollChoices[counter].voteColor);
 				counter++;
 			}
-			if(userObject.id == thePoll.pollOwner){
-				$('#button-area').append('<button class="btn btn-danger btn-block" id="delete-poll">Delete Poll</button>');
-			}
 			var ctx = document.getElementById("resultChart").getContext('2d');
 			var myChart = new Chart(ctx, {
 				type: 'pie',
@@ -150,7 +147,8 @@ function buildChart(thisID){
 				}
 			});
 			
-			
-			
+			if(userObject.id == thePoll.pollOwner){
+				$('#button-area').append('<button class="btn btn-danger btn-block" id="delete-poll">Delete Poll</button>');
+			}
 		});
 }
