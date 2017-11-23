@@ -95,6 +95,13 @@ module.exports = function (app, passport) {
 		}
 	  });
 		
+	app.get('/get-user',
+	  require('connect-ensure-login').ensureLoggedIn(),
+	  function(httpReq, httpRes){
+		httpRes.setHeader('Content-Type', 'application/json');
+		httpRes.end(JSON.stringify(httpReq.user));
+	 });		  
+		
 	app.get('/fcc-voting', function (httpReq, httpRes) {
 		httpRes.render('fcc-voting', { user: httpReq.user } );
 	});

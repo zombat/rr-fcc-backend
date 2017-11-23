@@ -1,8 +1,14 @@
 var siteURL = 'https://rr-fcc-backend.herokuapp.com';
 //var siteURL = 'http://127.0.0.1';
+var userObject;
 
 $( document ).ready(function() {
 	console.log('Document Ready');
+	
+	$.getJSON(siteURL + '/get-user').done(function(user) {
+		userObject = user;
+		console.log(userObject);
+		});
 	
 	$('#nav-logout').hover(function() {
 		$('#nav-text').html('Sign Out');
