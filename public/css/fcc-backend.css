@@ -6,14 +6,14 @@ h1 {
 	margin: 30px;
 }
 
-a, a:hover {
+.nav-bar a, .nav-bar a:hover {
 	color: #ffffff;
 	text-decoration: none;
 	font-size: 20px;
 	padding: 10px;
 }
 
-a:hover {
+.nav-bar a:hover {
 	color: 	#428bca;
 	background-color: #ffffff;
 }
@@ -169,4 +169,11 @@ textarea {
 .large-check {
 	width: 20px;
 	height: 20px;
+}
+
+#button-area .btn {
+	margin-top: 5px;
+}
+#button-area a:hover {
+	text-decoration: none;
 }

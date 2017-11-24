@@ -114,6 +114,7 @@ $( document ).ready(function() {
 	
 	if(window.location.href.match(/127.0.0.1/) || window.location.href.match(/localhost/)){
 		siteURL = 'http://127.0.0.1';
+		userObject = {};
 	}
 	
 	
@@ -132,14 +133,14 @@ function getPolls(type){
 		$.getJSON(siteURL + '/vote-api?myPolls=true').done(function(data) {
 			searchResultsArray = data;
 			searchResultsArray.forEach(function(resultEntry){
-				$('#poll-list').append('<div class="result-entry text-center" id="' + resultEntry._id + '">' + resultEntry.pollTitle + '</div>');
+				$('#poll-list').append('<button class="btn btn-block result-entry text-center" id="' + resultEntry._id + '">' + resultEntry.pollTitle + '</button>');
 			});
 		});
 	} else {	
 		$.getJSON(siteURL + '/vote-api?pollList=true').done(function(data) {
 			searchResultsArray = data;
 			searchResultsArray.forEach(function(resultEntry){
-				$('#poll-list').append('<div class="result-entry text-center" id="' + resultEntry._id + '">' + resultEntry.pollTitle + '</div>');
+				$('#poll-list').append('<button class="btn btn-block result-entry text-center" id="' + resultEntry._id + '">' + resultEntry.pollTitle + '</button>');
 			});
 		});
 	}
@@ -191,11 +192,12 @@ function buildChart(thisID){
 			if(userObject.id == thePoll.pollOwner){
 				$(document).find('#button-area').append('<button class="btn btn-danger btn-block" id="delete-poll">Delete Poll</button>');
 			}
-			if(1==1){
-				var workingID = $('.poll').attr('id');
-				//$(document).find('#button-area').append('<div class="fb-share-button" data-href="' + siteURL + '/fcc-voting?pollID=' + workingID + '" data-layout="button_count"><button class="btn btn-block"></button></div>');
-				$(document).find('#button-area').append('<div class="fb-share-button" data-href="https://rr-fcc-backend.herokuapp.com/fcc-voting?pollID=5a17279ab685810014698de9" data-layout="button" data-size="large" data-mobile-iframe="false"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Frr-fcc-backend.herokuapp.com%2Ffcc-voting%3FpollID%3D5a17279ab685810014698de9&amp;src=sdkpreparse">Share</a></div>');
-			}
+			
+			var workingID = $('.poll').attr('id');
+			console.log(workingID);
+			$(document).find('#button-area').append('<a href="https://www.facebook.com/sharer/sharer.php?u=' + siteURL + '/fcc-voting?pollID=' + workingID + '"><button class="btn btn-info btn-block">Share on Facebook</button></a>');
+				
 		});
 		
+	
 }

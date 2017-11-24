@@ -46,18 +46,27 @@ module.exports = function (app, passport) {
 				  });
 				});
 			});
-		} else if(httpReq.query.pollID){
-			mongo.connect(MONGO_URI, function(err, db) {
-				db.collection('fcc-polls', function (err, collection) {      
-					collection.findOne({ '_id' : require('mongodb').ObjectID(httpReq.query.pollID) }).then(function(document) {
-						if(document){
-							httpRes.setHeader('Content-Type', 'application/json');
-							httpRes.end(JSON.stringify(document));
-						}
-						db.close();
-				  });
-				});
-			});
+		} else if(httpReq.query.pollID){  
+			try {
+				var pollID = require('mongodb').ObjectID(httpReq.query.pollID);
+			} finally {
+				if(pollID){
+					mongo.connect(MONGO_URI, function(err, db) {
+						db.collection('fcc-polls', function (err, collection) {  
+							collection.findOne({ '_id' : pollID }).then(function(document) {
+								if(document){
+									httpRes.setHeader('Content-Type', 'application/json');
+									httpRes.end(JSON.stringify(document));
+								}
+								db.close();
+						  });
+						});
+					});
+				} else {
+					httpRes.setHeader('Content-Type', 'application/json');
+					httpRes.end(JSON.stringify( { 'error' : 'no document by that ID' } ));
+				}
+			}
 		} else if(httpReq.query.myPolls) {
 			mongo.connect(MONGO_URI, function(err, db) {
 				var tempVar;
