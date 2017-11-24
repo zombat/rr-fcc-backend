@@ -25,7 +25,19 @@ module.exports = function (app, passport) {
 		} else if(httpReq.query.pollID && httpReq.query.voteCast){
 			mongo.connect(MONGO_URI, function(err, db) {
 				db.collection('fcc-polls', function (err, collection) {   
-					collection.updateOne({ '_id' : require('mongodb').ObjectID(httpReq.query.pollID), 'pollChoices.choiceName': httpReq.query.voteCast }, { $inc : { 'pollChoices.$.voteCount': 1  } } ).then(function(document) {
+					collection.updateOne({ '_id' : require('mongodb').ObjectID(httpReq.query.pollID), 'pollChoices.choiceName': httpReq.query.voteCast }, { '$inc' : { 'pollChoices.$.voteCount': 1  } } ).then(function(document) {
+						if(document){
+							httpRes.setHeader('Content-Type', 'application/json');
+							httpRes.end(JSON.stringify(document));
+						}
+						db.close();
+				  });
+				});
+			});
+		} else if(httpReq.query.pollID && httpReq.query.customResponse && httpReq.query.customColor){
+			mongo.connect(MONGO_URI, function(err, db) {
+				db.collection('fcc-polls', function (err, collection) {      
+					collection.updateOne({ '_id' : require('mongodb').ObjectID(httpReq.query.pollID) }, { '$push' : { 'pollChoices' : { 'choiceName' : httpReq.query.customResponse.toString(), 'voteCount' : 1, 'voteColor' : httpReq.query.customColor.toString() } } } ).then(function(document) {
 						if(document){
 							httpRes.setHeader('Content-Type', 'application/json');
 							httpRes.end(JSON.stringify(document));
@@ -137,7 +149,7 @@ module.exports = function (app, passport) {
 		httpRes.end(JSON.stringify(httpReq.user));
 	 });		  
 		
-	app.get('/fcc-voting', function (httpReq, httpRes) {
+	app.get('/fcc-voting*', function (httpReq, httpRes) {
 		httpRes.render('fcc-voting', { user: httpReq.user } );
 	});
 		

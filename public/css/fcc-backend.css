@@ -161,3 +161,12 @@ textarea {
 	width: 40%;
 	float: right;
 }
+
+#custom-response-area input, #custom-response-area select{
+	margin: 10px;
+}
+
+.large-check {
+	width: 20px;
+	height: 20px;
+}

@@ -1,13 +1,16 @@
 var siteURL = 'https://rr-fcc-backend.herokuapp.com';
-//var siteURL = 'http://127.0.0.1';
 var userObject;
+var colorSelectButton = '<select name="Poll Choices" class="btn btn-poll pull-right poll-choice poll-choice-color"><option value="aliceblue">aliceblue</option><option value="antiquewhite">antiquewhite</option><option value="aqua">aqua</option><option value="aquamarine">aquamarine</option><option value="azure">azure</option><option value="beige">beige</option><option value="bisque">bisque</option><option value="black">black</option><option value="blanchedalmond">blanchedalmond</option><option value="blue">blue</option><option value="blueviolet">blueviolet</option><option value="brown">brown</option><option value="burlywood">burlywood</option><option value="cadetblue">cadetblue</option><option value="chartreuse">chartreuse</option><option value="chocolate">chocolate</option><option value="coral">coral</option><option value="cornflowerblue">cornflowerblue</option><option value="crimson">crimson</option><option value="cyan">cyan</option><option value="darkblue">darkblue</option><option value="darkcyan">darkcyan</option><option value="darkgoldenrod">darkgoldenrod</option><option value="darkgray">darkgray</option><option value="darkgreen">darkgreen</option><option value="darkmagenta">darkmagenta</option><option value="darkorange">darkorange</option><option value="darkred">darkred</option><option value="darksalmon">darksalmon</option><option value="dodgerblue">dodgerblue</option></select>';
+var colorSelectButtonTwo = '<select name="Poll Choices" class="btn poll-choice poll-choice-color"><option value="aliceblue">aliceblue</option><option value="antiquewhite">antiquewhite</option><option value="aqua">aqua</option><option value="aquamarine">aquamarine</option><option value="azure">azure</option><option value="beige">beige</option><option value="bisque">bisque</option><option value="black">black</option><option value="blanchedalmond">blanchedalmond</option><option value="blue">blue</option><option value="blueviolet">blueviolet</option><option value="brown">brown</option><option value="burlywood">burlywood</option><option value="cadetblue">cadetblue</option><option value="chartreuse">chartreuse</option><option value="chocolate">chocolate</option><option value="coral">coral</option><option value="cornflowerblue">cornflowerblue</option><option value="crimson">crimson</option><option value="cyan">cyan</option><option value="darkblue">darkblue</option><option value="darkcyan">darkcyan</option><option value="darkgoldenrod">darkgoldenrod</option><option value="darkgray">darkgray</option><option value="darkgreen">darkgreen</option><option value="darkmagenta">darkmagenta</option><option value="darkorange">darkorange</option><option value="darkred">darkred</option><option value="darksalmon">darksalmon</option><option value="dodgerblue">dodgerblue</option></select>';
+
 
 $( document ).ready(function() {
 	console.log('Document Ready');
 	
+	
+	
 	$.getJSON(siteURL + '/get-user').done(function(user) {
-		userObject = user;
-		console.log(userObject);
+		userObject = user
 		});
 	
 	$('#nav-logout').hover(function() {
@@ -28,7 +31,6 @@ $( document ).ready(function() {
 		$('#nav-text').text('');
 	});
 	
-	getPolls();
 	
 	
 	$(document).on('click','.result-entry', function() {
@@ -55,6 +57,16 @@ $( document ).ready(function() {
 		$(this).parent().remove();
 	});	
 	
+	$(document).on('click','#custom-response-check', function() {
+		if($('#custom-response-check').is(':checked')){
+			$('.poll-choice').prop('disabled', false);
+			$('.btn-poll').prop('disabled', true);
+		} else {
+			$('.poll-choice').prop('disabled', true);
+			$('.btn-poll').prop('disabled', false);
+		}
+	});	
+	
 	$(document).on('click','#submit-poll', function() {
 		var choicesArray = [];
 		$('.poll-choice-entry').each(function(){
@@ -75,7 +87,7 @@ $( document ).ready(function() {
 	
 	$(document).on('click','#add-poll-choice', function() {
 		if($('#poll-choices').children().length < 52){
-			$('#poll-choices').append('<div class="poll-choice-entry"><input class="form-control pull-left poll-choice poll-choice-name" rows="1" maxlength="100" placeholder="Poll Choice Name"></input><button class="btn btn-danger pull-right remove-poll-choice-button">-</button><select name="Poll Choices" class="btn btn-poll pull-right poll-choice poll-choice-color"><option value="aliceblue">aliceblue</option><option value="antiquewhite">antiquewhite</option><option value="aqua">aqua</option><option value="aquamarine">aquamarine</option><option value="azure">azure</option><option value="beige">beige</option><option value="bisque">bisque</option><option value="black">black</option><option value="blanchedalmond">blanchedalmond</option><option value="blue">blue</option><option value="blueviolet">blueviolet</option><option value="brown">brown</option><option value="burlywood">burlywood</option><option value="cadetblue">cadetblue</option><option value="chartreuse">chartreuse</option><option value="chocolate">chocolate</option><option value="coral">coral</option><option value="cornflowerblue">cornflowerblue</option><option value="crimson">crimson</option><option value="cyan">cyan</option><option value="darkblue">darkblue</option><option value="darkcyan">darkcyan</option><option value="darkgoldenrod">darkgoldenrod</option><option value="darkgray">darkgray</option><option value="darkgreen">darkgreen</option><option value="darkmagenta">darkmagenta</option><option value="darkorange">darkorange</option><option value="darkred">darkred</option><option value="darksalmon">darksalmon</option><option value="dodgerblue">dodgerblue</option></select></div>');
+			$('#poll-choices').append('<div class="poll-choice-entry"><input class="form-control pull-left poll-choice poll-choice-name" rows="1" maxlength="100" placeholder="Poll Choice Name"></input><button class="btn btn-danger pull-right remove-poll-choice-button">-</button>' + colorSelectButton + '</div>');
 		} else {
 			alert('Arbitrary choice limit reached.');
 		}
@@ -83,14 +95,35 @@ $( document ).ready(function() {
 	
 	$(document).on('click','#submit-vote', function() {
 		var workingID = $(this).closest('.poll').attr('id');
-		$.getJSON(siteURL + '/vote-api?pollID=' + workingID + '&voteCast=' + $('#select-' + workingID).val().toString()).done(function(data) {	
-			alert('Vote sucessfully cast for ' + $('#select-' + workingID).val().toString());
-			buildChart(workingID);
-		});
+		
+		// For custom response
+		if($('#custom-response-check').is(':checked')){
+			$.getJSON(siteURL + '/vote-api?pollID=' + workingID + '&customResponse=' + $('.poll-choice-name').val().toString() + '&customColor=' + $('.poll-choice-color').val().toString()).done(function(data) {	
+					alert('Vote sucessfully cast for ' + $('.poll-choice-name').val().toString());
+					buildChart(workingID);
+				});
+		} else {	
+			$.getJSON(siteURL + '/vote-api?pollID=' + workingID + '&voteCast=' + $('#select-' + workingID).val().toString()).done(function(data) {	
+				alert('Vote sucessfully cast for ' + $('#select-' + workingID).val().toString());
+				buildChart(workingID);
+			});
+		}
 	});
 	
+	// Use localhost if needed
+	
+	if(window.location.href.match(/127.0.0.1/) || window.location.href.match(/localhost/)){
+		siteURL = 'http://127.0.0.1';
+	}
+	
+	
+	if(window.location.href.match(/pollID/)){
+		buildChart(window.location.href.split('=')[1]);
+	} else {
+		getPolls();	
+	}
+	
 });
-
 
 
 function getPolls(type){
@@ -119,9 +152,11 @@ function buildChart(thisID){
 		$('#poll-list').empty();
 			$.getJSON(siteURL + '/vote-api?pollID=' + thisID).done(function(data) {
 			thePoll = data;
-			console.log(thePoll);
 			$('#poll-list').append('<div id="' + thePoll._id + '" class="poll"><h2>' + thePoll.pollTitle + '</h2><div id="canvasDiv"><canvas class="pull-right" id="resultChart"></canvas></div></div>');
-			$('#' + thePoll._id).append('<select id="select-' + thePoll._id + '" name="Poll Choices" class="btn btn-poll"></select><div id="button-area"><button class="btn btn-primary btn-block" id="submit-vote">Sumbit Vote</button><button class="btn btn-warning btn-block" id="go-back">Back to Polls</button></div>');
+			
+			//$('#' + thePoll._id).append('<select id="select-' + thePoll._id + '" name="Poll Choices" class="btn btn-poll"></select><div id="button-area"><button class="btn btn-primary btn-block" id="submit-vote">Sumbit Vote</button><button class="btn btn-warning btn-block" id="go-back">Back to Polls</button></div>');
+			$('#' + thePoll._id).append('<select id="select-' + thePoll._id + '" name="Poll Choices" class="btn btn-poll"></select><h3>Custom Response <input id="custom-response-check" type="checkbox" value="" class="large-check"></div></h3><div id="custom-response-area"><input class="form-control poll-choice poll-choice-name" rows="1" maxlength="100" placeholder="Poll Choice Name"></input><div class="checkbox">' + colorSelectButtonTwo + '</div><div id="button-area"><button class="btn btn-primary btn-block" id="submit-vote">Sumbit Vote</button><button class="btn btn-warning btn-block" id="go-back">Back to Polls</button></div>');
+			$('.poll-choice').prop('disabled', true);
 			var counter = 0;
 			while(counter < thePoll.pollChoices.length){
 				$('#select-' + thePoll._id).append('<option value="' + thePoll.pollChoices[counter].choiceName + '">' + thePoll.pollChoices[counter].choiceName + '</option>');
@@ -130,6 +165,9 @@ function buildChart(thisID){
 				voteColor.push(thePoll.pollChoices[counter].voteColor);
 				counter++;
 			}
+			
+			
+			
 			var ctx = document.getElementById("resultChart").getContext('2d');
 			var myChart = new Chart(ctx, {
 				type: 'pie',
@@ -147,8 +185,15 @@ function buildChart(thisID){
 				}
 			});
 			
-			if(userObject.id == thePoll.pollOwner){
-				$('#button-area').append('<button class="btn btn-danger btn-block" id="delete-poll">Delete Poll</button>');
+			if(1==1){
+			//if(userObject.id == thePoll.pollOwner){
+				$(document).find('#button-area').append('<button class="btn btn-danger btn-block" id="delete-poll">Delete Poll</button>');
+			}
+			if(1==1){
+				var workingID = $('.poll').attr('id');
+				$(document).find('#button-area').append('<div class="fb-share-button" data-href="' + siteURL + '/fcc-voting?pollID=' + workingID + '" data-layout="button_count"><button class="btn btn-block"></button></div>');
+				//$(document).find('#button-area').append('<button class="btn btn-info btn-block" id="share-button">Share</button>');
 			}
 		});
+		
 }
