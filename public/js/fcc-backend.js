@@ -153,10 +153,13 @@ function buildChart(thisID){
 			$.getJSON(siteURL + '/vote-api?pollID=' + thisID).done(function(data) {
 			thePoll = data;
 			$('#poll-list').append('<div id="' + thePoll._id + '" class="poll"><h2>' + thePoll.pollTitle + '</h2><div id="canvasDiv"><canvas class="pull-right" id="resultChart"></canvas></div></div>');
-			
-			//$('#' + thePoll._id).append('<select id="select-' + thePoll._id + '" name="Poll Choices" class="btn btn-poll"></select><div id="button-area"><button class="btn btn-primary btn-block" id="submit-vote">Sumbit Vote</button><button class="btn btn-warning btn-block" id="go-back">Back to Polls</button></div>');
-			$('#' + thePoll._id).append('<select id="select-' + thePoll._id + '" name="Poll Choices" class="btn btn-poll"></select><h3>Custom Response <input id="custom-response-check" type="checkbox" value="" class="large-check"></div></h3><div id="custom-response-area"><input class="form-control poll-choice poll-choice-name" rows="1" maxlength="100" placeholder="Poll Choice Name"></input><div class="checkbox">' + colorSelectButtonTwo + '</div><div id="button-area"><button class="btn btn-primary btn-block" id="submit-vote">Sumbit Vote</button><button class="btn btn-warning btn-block" id="go-back">Back to Polls</button></div>');
-			$('.poll-choice').prop('disabled', true);
+			if(userObject){
+				// Custom choices enabled if logged in.
+				$('#' + thePoll._id).append('<select id="select-' + thePoll._id + '" name="Poll Choices" class="btn btn-poll"></select><h3>Custom Response <input id="custom-response-check" type="checkbox" value="" class="large-check"></div></h3><div id="custom-response-area"><input class="form-control poll-choice poll-choice-name" rows="1" maxlength="100" placeholder="Poll Choice Name"></input><div class="checkbox">' + colorSelectButtonTwo + '</div><div id="button-area"><button class="btn btn-primary btn-block" id="submit-vote">Sumbit Vote</button><button class="btn btn-warning btn-block" id="go-back">Back to Polls</button></div>');
+				$('.poll-choice').prop('disabled', true);
+			} else {
+				$('#' + thePoll._id).append('<select id="select-' + thePoll._id + '" name="Poll Choices" class="btn btn-poll"></select><div id="button-area"><button class="btn btn-primary btn-block" id="submit-vote">Sumbit Vote</button><button class="btn btn-warning btn-block" id="go-back">Back to Polls</button></div>');	
+			}
 			var counter = 0;
 			while(counter < thePoll.pollChoices.length){
 				$('#select-' + thePoll._id).append('<option value="' + thePoll.pollChoices[counter].choiceName + '">' + thePoll.pollChoices[counter].choiceName + '</option>');
@@ -185,14 +188,13 @@ function buildChart(thisID){
 				}
 			});
 			
-			if(1==1){
-			//if(userObject.id == thePoll.pollOwner){
+			if(userObject.id == thePoll.pollOwner){
 				$(document).find('#button-area').append('<button class="btn btn-danger btn-block" id="delete-poll">Delete Poll</button>');
 			}
 			if(1==1){
 				var workingID = $('.poll').attr('id');
-				$(document).find('#button-area').append('<div class="fb-share-button" data-href="' + siteURL + '/fcc-voting?pollID=' + workingID + '" data-layout="button_count"><button class="btn btn-block"></button></div>');
-				//$(document).find('#button-area').append('<button class="btn btn-info btn-block" id="share-button">Share</button>');
+				//$(document).find('#button-area').append('<div class="fb-share-button" data-href="' + siteURL + '/fcc-voting?pollID=' + workingID + '" data-layout="button_count"><button class="btn btn-block"></button></div>');
+				$(document).find('#button-area').append('<div class="fb-share-button" data-href="https://rr-fcc-backend.herokuapp.com/fcc-voting?pollID=5a17279ab685810014698de9" data-layout="button" data-size="large" data-mobile-iframe="false"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Frr-fcc-backend.herokuapp.com%2Ffcc-voting%3FpollID%3D5a17279ab685810014698de9&amp;src=sdkpreparse">Share</a></div>');
 			}
 		});
 		
